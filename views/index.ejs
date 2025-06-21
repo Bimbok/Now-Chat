@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Modern UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bg-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .bg-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+            animation-delay: -2s;
+        }
+
+        .bg-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: 40%;
+            left: 85%;
+            animation-delay: -4s;
+        }
+
+        .bg-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            left: 20%;
+            animation-delay: -1s;
+        }
+
+        .bg-element:nth-child(5) {
+            width: 140px;
+            height: 140px;
+            top: 10%;
+            left: 70%;
+            animation-delay: -3s;
+        }
+
+        .bg-element:nth-child(6) {
+            width: 90px;
+            height: 90px;
+            top: 60%;
+            left: 5%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        /* Main container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Login card */
+        .login-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo */
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.7));
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Form title */
+        .form-title {
+            color: white;
+            font-size: 32px;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Forgot password link */
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .forgot-password a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Sign in button */
+        .signin-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 25px;
+        }
+
+        .signin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .signin-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Register link */
+        .register-link {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .register-link a:hover {
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 25px;
+                margin: 20px;
+            }
+
+            .form-title {
+                font-size: 28px;
+            }
+
+            .bg-element {
+                display: none;
+            }
+        }
+
+        /* Loading animation for button */
+        .signin-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .signin-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated background elements -->
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+
+    <div class="container">
+        <div class="login-card">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <div class="logo-text">Your logo</div>
+            </div>
+
+            <h1 class="form-title"><%= entry %></h1>
+
+            <form id="loginForm" action="#" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input name="email" type="email" id="email" class="form-input" placeholder="Enter your email" required>
+                </div>
+
+                <% if (flag) { %>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input name="password" type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Confirm Password</label>
+                    <input name="confirmPassword" type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                <% } else { %>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input name="password" type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                <% } %>
+
+                <button type="submit" class="signin-btn" id="signinBtn">
+                    <%= entry3 %>
+                </button>
+
+                <div class="register-link">
+                    Don't have an account yet? <a href="<%= path %>" > <%= entry2 %> </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form submission with loading animation
+        // document.getElementById('loginForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
+
+        //     const btn = document.getElementById('signinBtn');
+        //     btn.classList.add('loading');
+
+        //     // Simulate login process
+        //     setTimeout(() => {
+        //         btn.classList.remove('loading');
+        //         alert('Login successful! (This is a demo)');
+        //     }, 2000);
+        // });
+
+        // Demo functions
+        function showForgotPassword() {
+            alert('Forgot password functionality would be implemented here.');
+        }
+
+        function showRegister() {
+            alert('Registration page would be implemented here.');
+        }
+
+        // Add subtle parallax effect to background elements
+        document.addEventListener('mousemove', function (e) {
+            const elements = document.querySelectorAll('.bg-element');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            elements.forEach((element, index) => {
+                const speed = (index + 1) * 0.5;
+                const x = (mouseX - 0.5) * speed * 20;
+                const y = (mouseY - 0.5) * speed * 20;
+
+                element.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+
+</html>
