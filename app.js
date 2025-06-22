@@ -160,12 +160,12 @@ app.get("/logout", (req, res) => {
     });
 });
 
-const port = 3000;
-const server = app.listen(port, () => {
-    console.log(`Server is on ${port}`);
-})
-
-const io = require("socket.io")(server);
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "*", // For production, you might want to restrict this to your domain
+    }
+});
 
 let socketsConected = new Set();
 
@@ -191,3 +191,6 @@ function onConnected(socket) {
         socket.broadcast.emit("feedback", data);
     });
 }
+
+// Finally, export the server instance for Vercel
+module.exports = server;
