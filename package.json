@@ -1,7 +1,7 @@
 {
-  "name": "mymy",
+  "name": "Now Chat",
   "version": "1.0.0",
-  "description": "by bimbok",
+  "description": "a group chatting app",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,6 @@
   "author": "bimbok",
   "license": "ISC",
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.10",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cookie-parser": "^1.4.7",
@@ -22,8 +21,5 @@
     "nodemon": "^3.1.10",
     "socket.io": "^4.8.1"
   },
-  "keywords": [],
-  "devDependencies": {
-    "tailwindcss": "^4.1.10"
-  }
+  "keywords": []
 }

@@ -4,7 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Modern UI</title>
+    <title>
+        <% if (!flag) { %>
+            Now Chat Login
+        <% } else { %>
+            Now Chat Register
+        <% } %>
+    </title>
     <style>
         * {
             margin: 0;
@@ -360,7 +366,7 @@
         <div class="login-card">
             <div class="logo">
                 <div class="logo-icon"></div>
-                <div class="logo-text">Your logo</div>
+                <div class="logo-text">Now Chat</div>
             </div>
 
             <h1 class="form-title"><%= entry %></h1>
