@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 //Set up default mongoose connection
 var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
@@ -31,8 +33,35 @@ const User = mongoose.model('User', userSchema);
 app.set('view engine', 'ejs');
 app.use(express.static("src"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'a_default_secret_key', // It's better to use an environment variable for the secret
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if you are using https
+}));
+
+// Middleware to check if user is authenticated
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+};
+
+app.get("/", (req, res) => {
+    if (req.session.user) {
+        res.redirect("/chat");
+    } else {
+        res.redirect("/login");
+    }
+});
 
 app.get("/login", (req, res) => {
+    if (req.session.user) {
+        return res.redirect('/chat');
+    }
     let flag = false;
     res.render("index", {
         entry: "Login",
@@ -44,6 +73,9 @@ app.get("/login", (req, res) => {
 })
 
 app.get("/register", (req, res) => {
+    if (req.session.user) {
+        return res.redirect('/chat');
+    }
     let flag = true;
     res.render("index", {
         entry: "Register",
@@ -93,7 +125,12 @@ app.post("/login", (req, res) => {
             if (foundUser) {
                 bcrypt.compare(req.body.password, foundUser.password, (err, result) => {
                     if (result === true) {
-                        res.send("<h1>Logged in successfully!</h1>");
+                        req.session.user = { email: foundUser.email }; // Set session
+                        if (req.body.remember) {
+                            // Set a persistent cookie
+                            req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+                        }
+                        res.redirect("/chat");
                     } else {
                         res.redirect("/login");
                     }
@@ -109,7 +146,48 @@ app.post("/login", (req, res) => {
         });
 });
 
+app.get("/chat", isAuthenticated, (req, res) => {
+    res.render("nowChat", { email: req.session.user.email });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.redirect('/chat');
+        }
+        res.clearCookie('connect.sid'); // The default session cookie name
+        res.redirect('/login');
+    });
+});
+
 const port = 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is on ${port}`);
 })
+
+const io = require("socket.io")(server);
+
+let socketsConected = new Set();
+
+io.on("connection", onConnected);
+
+function onConnected(socket) {
+    console.log("Socket connected", socket.id);
+    socketsConected.add(socket.id);
+    io.emit("clients-total", socketsConected.size);
+
+    socket.on("disconnect", () => {
+        console.log("Socket disconnected", socket.id);
+        socketsConected.delete(socket.id);
+        io.emit("clients-total", socketsConected.size);
+    });
+
+    socket.on("message", (data) => {
+        // console.log(data)
+        socket.broadcast.emit("chat-message", data);
+    });
+
+    socket.on("feedback", (data) => {
+        socket.broadcast.emit("feedback", data);
+    });
+}

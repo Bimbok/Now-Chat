@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+        integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>Now Chat</title>
+</head>
+
+<body>
+    <h1 class="title">Now Chat</h1>
+    <div class="main">
+        <div class="name">
+            <span><i class="far fa-user"></i></span>
+            <input type="text" id="name-input" class="name-input" value="<%= entry4 %>" maxlength="20" />
+        </div>
+
+        <ul class="message-container" id="message-container">
+            <!-- These li elements are only for reference, and therefore, they are commented out... -->
+            <!-- <li class="message-left">
+          <p class="message">
+            <span>bluebird ● 26 July 10:40</span>
+          </p>
+        </li>
+
+        <li class="message-right">
+          <p class="message">
+            <span>bluebird ● 26 July 10:40</span>
+          </p>
+        </li>
+
+        <li class="message-feedback">
+          <p class="feedback" id="feedback">✍️ killer is typing a message...</p>
+        </li> -->
+        </ul>
+
+        <form class="message-form" id="message-form">
+            <input type="text" name="message" id="message-input" class="message-input" />
+            <div class="v-divider"></div>
+            <button type="submit" class="send-button">
+                send <span><i class="fas fa-paper-plane"></i></span>
+            </button>
+        </form>
+    </div>
+    <h3 class="clients-total" id="client-total">Total clients: 2</h3>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Get elements
+        const messageForm = document.getElementById('message-form');
+        const messageInput = document.getElementById('message-input');
+        const messageContainer = document.getElementById('message-container');
+        const nameInput = document.getElementById('name-input');
+        const clientTotal = document.getElementById('client-total');
+        const sendButton = messageForm.querySelector('.send-button');
+
+        // Add placeholder to message input if not present
+        if (!messageInput.placeholder) {
+          messageInput.placeholder = 'Type your message...';
+        }
+
+        // Add placeholder to name input if not present
+        if (!nameInput.placeholder) {
+          nameInput.placeholder = 'Enter your name...';
+        }
+
+        // Auto-scroll to bottom function
+        function scrollToBottom() {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        // Add message animation when new messages are added
+        const observer = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            if (mutation.type === 'childList') {
+              mutation.addedNodes.forEach(function (node) {
+                if (node.nodeType === 1 && (node.classList.contains('message-left') || node.classList.contains('message-right'))) {
+                  // Trigger animation
+                  node.style.opacity = '0';
+                  node.style.transform = 'translateY(20px) scale(0.95)';
+
+                  setTimeout(() => {
+                    node.style.transition = 'all 0.4s ease-out';
+                    node.style.opacity = '1';
+                    node.style.transform = 'translateY(0) scale(1)';
+                  }, 10);
+
+                  scrollToBottom();
+                }
+              });
+            }
+          });
+        });
+
+        // Observe message container for new messages
+        observer.observe(messageContainer, { childList: true });
+
+        // Enhanced form submission with loading state
+        if (messageForm) {
+          messageForm.addEventListener('submit', function (e) {
+            const message = messageInput.value.trim();
+            if (message) {
+              // Add loading state to button
+              sendButton.classList.add('loading');
+
+              // Remove loading state after a short delay (for demo purposes)
+              setTimeout(() => {
+                sendButton.classList.remove('loading');
+              }, 500);
+            }
+          });
+        }
+
+        // Auto-focus message input
+        if (messageInput) {
+          messageInput.focus();
+        }
+
+        // Name input enhancement
+        if (nameInput) {
+          nameInput.addEventListener('blur', function () {
+            if (!this.value.trim()) {
+              this.value = 'anonymous';
+            }
+          });
+
+          // Add visual feedback when name changes
+          nameInput.addEventListener('input', function () {
+            const userIcon = document.querySelector('.name span');
+            if (userIcon) {
+              userIcon.style.transform = 'scale(1.1)';
+              setTimeout(() => {
+                userIcon.style.transform = 'scale(1)';
+              }, 200);
+            }
+          });
+        }
+
+        // Add typing indicator functionality
+        let typingTimeout;
+        if (messageInput) {
+          messageInput.addEventListener('input', function () {
+            // Clear previous timeout
+            clearTimeout(typingTimeout);
+
+            // Add subtle animation to input
+            this.style.transform = 'translateY(-1px)';
+
+            // Reset animation after short delay
+            typingTimeout = setTimeout(() => {
+              this.style.transform = 'translateY(0)';
+            }, 150);
+          });
+        }
+
+        // Enhanced client total updates with animation
+        function updateClientTotal(count) {
+          if (clientTotal) {
+            clientTotal.style.transform = 'scale(1.1)';
+            clientTotal.textContent = `Total clients: ${count}`;
+
+            setTimeout(() => {
+              clientTotal.style.transform = 'scale(1)';
+            }, 200);
+          }
+        }
+
+        // Add parallax effect to background
+        document.addEventListener('mousemove', function (e) {
+          const mouseX = e.clientX / window.innerWidth;
+          const mouseY = e.clientY / window.innerHeight;
+
+          // Apply subtle parallax to the background gradient
+          const body = document.body;
+          const moveX = (mouseX - 0.5) * 20;
+          const moveY = (mouseY - 0.5) * 20;
+
+          body.style.backgroundPosition = `${moveX}px ${moveY}px`;
+        });
+
+        // Add smooth scrolling behavior
+        if (messageContainer) {
+          messageContainer.style.scrollBehavior = 'smooth';
+        }
+
+        // Add enter key handling for better UX
+        if (messageInput && messageForm) {
+          messageInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              messageForm.dispatchEvent(new Event('submit'));
+            }
+          });
+        }
+
+        // Add connection status indicator
+        function addConnectionIndicator() {
+          const title = document.querySelector('.title');
+          if (title && !title.querySelector('.connection-indicator')) {
+            const indicator = document.createElement('span');
+            indicator.className = 'connection-indicator';
+            indicator.innerHTML = ' <span style="color: #4CAF50; font-size: 12px;">●</span>';
+            title.appendChild(indicator);
+          }
+        }
+
+        // Initialize connection indicator
+        addConnectionIndicator();
+
+        // Scroll to bottom on page load
+        setTimeout(scrollToBottom, 100);
+      });
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js"
+        integrity="sha512-Q1f3TS3vSt1jQ8AwP2OuenztnLU6LwxgyyYOG1jgMW/cbEMHps/3wjvnl1P3WTrF3chJUWEoxDUEjMxDV8pujg=="
+        crossorigin="anonymous"></script>
+    <script src="/main.js"></script>
+</body>
+
+</html>
