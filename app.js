@@ -161,14 +161,9 @@ app.get("/logout", (req, res) => {
 });
 
 const port = 3000;
-const server = null;
-const PORT = process.env.PORT || 3000;
-if (!process.env.VERCEL) {
-    // Only listen when not on Vercel
-    server = app.listen(PORT, "0.0.0.0", () => {
-        console.log(`Server is Running at ${PORT}`);
-    });
-}
+const server = app.listen(port, () => {
+    console.log(`Server is on ${port}`);
+})
 
 const io = require("socket.io")(server);
 
