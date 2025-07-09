@@ -371,24 +371,58 @@
                 padding: 15px;
                 margin: 15px auto 0;
             }
+
+            /* Fix send button on mobile */
+            .send-button {
+                padding: 12px 20px;
+                font-size: 14px;
+                min-width: 80px;
+            }
+
+            .send-button span {
+                display: inline;
+            }
         }
 
         @media (max-width: 480px) {
             .main {
                 margin: 0 10px;
                 border-radius: 15px;
+                height: calc(100vh - 120px);
             }
 
+            .name, .message-form {
+                padding: 15px 20px;
+            }
+
+            .message-container {
+                padding: 15px 20px;
+            }
+
+            .title {
+                font-size: 24px;
+                padding: 20px 15px 10px;
+            }
+
+            .message-left, .message-right {
+                max-width: 90%;
+            }
+
+            /* Ensure send button is fully visible */
             .send-button {
-                padding: 15px;
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-                justify-content: center;
+                padding: 12px 16px;
+                border-radius: 20px;
+                min-width: 70px;
+                font-size: 13px;
+                white-space: nowrap;
             }
 
             .send-button span {
-                display: none;
+                display: inline;
+            }
+
+            .send-button span i {
+                font-size: 12px;
             }
 
             .name span {
@@ -397,8 +431,71 @@
                 font-size: 16px;
             }
 
+            .name-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .message-input {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+
+            /* Fix client total positioning */
+            .clients-total {
+                font-size: 12px;
+                padding: 12px 15px;
+                margin: 10px auto 0;
+                max-width: 180px;
+                border-radius: 12px;
+            }
+
+            /* Adjust title container for mobile */
+            .title-container {
+                padding: 0px 15px 0px 15px;
+            }
+
+            .logout-button {
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            .main {
+                margin: 0 8px;
+                height: calc(100vh - 110px);
+            }
+
+            .name, .message-form {
+                padding: 12px 15px;
+            }
+
+            .message-container {
+                padding: 12px 15px;
+            }
+
+            .send-button {
+                padding: 10px 12px;
+                min-width: 60px;
+                font-size: 12px;
+            }
+
+            .send-button span {
+                display: inline;
+            }
+
+            .clients-total {
+                font-size: 11px;
+                padding: 10px 12px;
+                margin: 8px auto 0;
+                max-width: 160px;
+            }
+
             .title {
-                font-size: 24px;
+                font-size: 22px;
+                padding: 15px 10px 8px;
             }
         }
 

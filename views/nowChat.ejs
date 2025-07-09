@@ -102,6 +102,39 @@
         transform: translateY(0);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
+
+    /* Mobile responsive adjustments */
+    @media (max-width: 480px) {
+        .title-container {
+            padding: 0px 15px 0px 15px;
+        }
+
+        .logout-button {
+            padding: 8px 15px;
+            font-size: 12px;
+            gap: 6px;
+        }
+
+        .logout-button i {
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .title-container {
+            padding: 0px 10px 0px 10px;
+        }
+
+        .logout-button {
+            padding: 6px 12px;
+            font-size: 11px;
+            gap: 4px;
+        }
+
+        .logout-button i {
+            font-size: 11px;
+        }
+    }
 </style>
 
 </html>
